@@ -26,7 +26,7 @@ class PlatesController {
     const { id } = request.params
 
     const plate = await knex("plates").where({ id }).first()
-    const ingredients = await knex("ingredients").wherer({ plate_id: id }).orderBy("name")
+    const ingredients = await knex("ingredients").where({ plate_id: id }).orderBy("name")
 
     return response.json({
       ...plate,
