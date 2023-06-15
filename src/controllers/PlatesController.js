@@ -10,16 +10,18 @@ class PlatesController {
       price
     })
 
-    const ingredientsInsert = ingredients.map(ingredient => {
+    const ingredientsInsert = ingredients?.map(ingredient => {
       return {
         name: ingredient,
         plates_id
       }
     })
 
-    await knex("ingredients").insert(ingredientsInsert)
+    if (ingredientsInsert?.length > 0) {
+      await knex("ingredients").insert(ingredientsInsert)
+    }
 
-    return response.json()
+    return response.json({id: plates_id})
   }
 
   async show(request, response) {
