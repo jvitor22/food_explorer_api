@@ -48,7 +48,7 @@ class PlatesController {
     await knex ("plates").where({ id }).update(plate);
     await knex("plates").where({ id }).update('updated_at', knex.fn.now())
 
-    return response.staus(200).json();    
+    return response.status(200).json();    
   }
 
   async show(request, response) {
