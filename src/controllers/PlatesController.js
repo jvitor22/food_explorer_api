@@ -24,6 +24,33 @@ class PlatesController {
     return response.json({id: plates_id})
   }
 
+  async update(request, response) {
+    const { title, description, ingredients, price, category} = request.body;
+    const { id } = request.params;
+    
+    const plate = await knex("plates").where({ id }).first();
+
+    plate.title = title ?? plate.title;
+    plate.description = description ?? plate.description;
+    plate.price = price ?? plate.price;
+    plate.category = category ?? plate.category;   
+    
+    const ingredientsInsert = ingredients?.map(name => ({
+        name,
+        plates_id: plate.id
+    }));
+
+    await knex("ingredients").where({plates_id: id}).delete();
+    if (ingredientsInsert?.length > 0) {
+      await knex("ingredients").insert(ingredientsInsert)
+    }
+
+    await knex ("plates").where({ id }).update(plate);
+    await knex("plates").where({ id }).update('updated_at', knex.fn.now())
+
+    return response.staus(200).json();    
+  }
+
   async show(request, response) {
     const { id } = request.params
 
