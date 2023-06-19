@@ -1,4 +1,5 @@
 require("express-async-errors")
+require("dotenv/config")
 const express = require("express")
 const cors = require("cors")
 const AppError = require("./utils/AppError")
@@ -27,5 +28,5 @@ app.use((error, request, response, next) => {
 
 app.use("/files", express.static(uploadConfig.UPLOADS_FOLDER))
 
-const PORT = 3333
+const PORT = process.env.PORT || 3000
 app.listen(PORT, () => console.log(`Server is running on Port ${PORT}`))
